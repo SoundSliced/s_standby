@@ -9,6 +9,7 @@ A lightweight Flutter utility to show a progress overlay while a `Future` runs, 
 - Customizable indicator, padding, and decoration
 - Dismissible barrier support
 - Unified `onDismissed` callback with contextual success/error data
+- Optional `onCancel` callback to stop your own work on dismissal
 - Programmatic dismissal via `SStandby.dismiss(id)`
 - Optional timeout handling (`timeout`, `timeoutBuilder`)
 - Optional auto-dismiss for success UI (`successAutoDismissAfter`)
@@ -55,6 +56,9 @@ SStandby.show<void>(
   id: 'save_user',
   title: 'Saving…',
   isDismissible: true,
+  onCancel: () {
+    // Stop your own work here (cancel subscription, abort request, etc.)
+  },
   successBuilder: (context) => const Text('Saved!'),
   successAutoDismissAfter: const Duration(seconds: 1),
   timeout: const Duration(seconds: 10),
@@ -86,6 +90,10 @@ SStandby.dismiss('save_user');
 - `wasSuccessful == true` → Future completed successfully
 - `wasSuccessful == false` → Future completed with error (see `error`/`stackTrace`)
 - `wasSuccessful == null` → dismissed before completion (user cancelled)
+
+## Compatibility
+
+Version 1.0.1 contains fixes only — no breaking changes or deprecations.
 
 
 

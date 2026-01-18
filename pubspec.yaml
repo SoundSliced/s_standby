@@ -2,7 +2,7 @@ name: s_standby
 description: A lightweight Flutter utility to show a progress overlay while a `Future` runs, with optional error/success builders.
 issue_tracker: https://github.com/SoundSliced/s_standby/issues
 repository: https://github.com/SoundSliced/s_standby
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/SoundSliced/s_standby
 
 environment:

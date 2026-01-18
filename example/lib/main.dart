@@ -56,6 +56,14 @@ class _StandbyHomePageState extends State<StandbyHomePage> {
     });
   }
 
+  void _handleCancel(String source) {
+    if (!mounted) return;
+    setState(() {
+      _isBusy = false;
+      _lastResult = 'Cancelled by user ($source)';
+    });
+  }
+
   Future<void> _runSuccessDemo() async {
     if (_isBusy) return;
     setState(() => _isBusy = true);
@@ -64,6 +72,7 @@ class _StandbyHomePageState extends State<StandbyHomePage> {
     SStandby.show(
       isDismissible: _isDismissible,
       onDismissed: _handleDismiss,
+      onCancel: () => _handleCancel('success demo'),
       future: future,
       id: 'success_demo',
       title: 'Working on it…',
@@ -81,6 +90,7 @@ class _StandbyHomePageState extends State<StandbyHomePage> {
     SStandby.show<void>(
       future: future,
       onDismissed: _handleDismiss,
+      onCancel: () => _handleCancel('error demo'),
       id: 'error_demo',
       title: 'Processing…',
       isDismissible: _isDismissible,
@@ -98,6 +108,7 @@ class _StandbyHomePageState extends State<StandbyHomePage> {
     SStandby.show<void>(
       future: future,
       onDismissed: _handleDismiss,
+      onCancel: () => _handleCancel('custom demo'),
       id: 'custom_demo',
       title: 'Customizing…',
       isDismissible: _isDismissible,
@@ -168,6 +179,7 @@ class _StandbyHomePageState extends State<StandbyHomePage> {
       isDismissible: _isDismissible,
       successDismissible: _isDismissible,
       onDismissed: _handleDismiss,
+      onCancel: () => _handleCancel('success pop demo'),
       successBuilder: (context) {
         return DecoratedBox(
           decoration: BoxDecoration(
@@ -228,6 +240,7 @@ class _StandbyHomePageState extends State<StandbyHomePage> {
       semanticsLabelWaiting: 'Working…',
       semanticsLabelError: 'Timed out',
       onDismissed: _handleDismiss,
+      onCancel: () => _handleCancel('timeout demo'),
       timeoutBuilder: (context, error, stackTrace) {
         return DecoratedBox(
           decoration: BoxDecoration(
@@ -266,6 +279,7 @@ class _StandbyHomePageState extends State<StandbyHomePage> {
       semanticsLabelWaiting: 'Finishing',
       semanticsLabelSuccess: 'Done',
       onDismissed: _handleDismiss,
+      onCancel: () => _handleCancel('auto-dismiss demo'),
       successBuilder: (context) {
         return DecoratedBox(
           decoration: BoxDecoration(

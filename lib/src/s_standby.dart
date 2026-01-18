@@ -28,6 +28,7 @@ class SStandby {
   static void show<T>({
     required Future<T> future,
     required String id,
+    FutureOr<void> Function()? onCancel,
     void Function({
       bool? wasSuccessful,
       Object? error,
@@ -78,7 +79,9 @@ class SStandby {
     final String overlayId = _overlayIdFor(id);
 
     // If the caller reuses an id, clean up any prior state.
-    dismiss(id);
+    _dismissInternal(id, reason: 'cleanup');
+    // Reset dismissal guard for the new overlay instance.
+    _dismissedOverlayIds.remove(overlayId);
 
     bool hasFiredUserOnDismissed = false;
     bool? completionResult;
@@ -103,6 +106,7 @@ class SStandby {
     final cancelable = CancelableOperation<T>.fromFuture(
       effectiveFuture,
       onCancel: () {
+        onCancel?.call();
         fireUserOnDismissed();
       },
     );
@@ -334,7 +338,20 @@ class SStandby {
 
   /// Dismiss the overlay if present, and cancel the in-flight operation (if any).
   static void dismiss(String id) {
+    _dismissInternal(id, reason: 'api');
+  }
+
+  static void _dismissInternal(String id, {required String reason}) {
     final String overlayId = _overlayIdFor(id);
+
+    final bool hasOperation = _operationsById.containsKey(id);
+    final bool hasActiveOverlay = PopOverlay.isActiveById(overlayId);
+
+    if (!hasOperation && !hasActiveOverlay) {
+      // Nothing to dismiss; avoid marking as dismissed so future overlays
+      // with the same id can still report their callbacks.
+      return;
+    }
 
     final op = _operationsById.remove(id);
     op?.cancel();

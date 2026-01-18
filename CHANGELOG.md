@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1
+
+- **Fixed** cancellation reporting when reusing the same overlay id.
+- **Fixed** cleanup dismissal guard so user-initiated dismissals are recorded reliably.
+- **Added** optional `onCancel` callback to let callers stop their own work on dismissal.
+- **Docs** Clarified border inset behavior and ensured examples remain up to date. 
+
 ## 1.0.0
 
 - **Changed** `onDismissed` signature to include contextual result data:

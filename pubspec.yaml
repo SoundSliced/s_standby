@@ -1,0 +1,24 @@
+name: s_standby
+description: A lightweight Flutter utility to show a progress overlay while a `Future` runs, with optional error/success builders.
+issue_tracker: https://github.com/SoundSliced/s_standby/issues
+repository: https://github.com/SoundSliced/s_standby
+version: 1.0.0
+homepage: https://github.com/SoundSliced/s_standby
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  pop_overlay: ^2.0.0
+  async: ^2.13.0
+  ticker_free_circular_progress_indicator: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
